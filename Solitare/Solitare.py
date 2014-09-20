@@ -59,85 +59,85 @@ class Solitare(object):
         self.deck = CardPile(deck)     # Combination of Deck and Waste Piles
 
     def __str__(self):
-        board = ''
+        boardlst = []
         if self.deck.flip > 0:
-            board = ''.join([board, '***  '])
+            boardlst.append('***  ')
         else:
-            board = ''.join([board, '---  '])
+            boardlst.append('---  ')
         if self.deck.flip < len(self.deck):
-            board = ''.join([board, str(self.deck.pile[self.deck.flip]), ' '])
+            boardlst.extend([str(self.deck.pile[self.deck.flip]), ' '])
         else:
-            board = ''.join([board, '---  '])
-        board = ''.join([board, '     '])
+            boardlst.append('---  ')
+        boardlst.append('     ')
         if len(self.home1.pile):
-            board = ''.join([board, str(self.home1.pile[-1]), ' '])
+            boardlst.extend([str(self.home1.pile[-1]), ' '])
         else:
-            board = ''.join([board, '---  '])
+            boardlst.append('---  ')
         if len(self.home2.pile):
-            board = ''.join([board, str(self.home2.pile[-1]), ' '])
+            boardlst.extend([str(self.home2.pile[-1]), ' '])
         else:
-            board = ''.join([board, '---  '])
+            boardlst.append('---  ')
         if len(self.home3.pile):
-            board = ''.join([board, str(self.home3.pile[-1]), ' '])
+            boardlst.extend([str(self.home3.pile[-1]), ' '])
         else:
-            board = ''.join([board, '---  '])
+            boardlst.append('---  ')
         if len(self.home4.pile):
-            board = ''.join([board, str(self.home4.pile[-1]), '\n\n'])
+            boardlst.extend([str(self.home4.pile[-1]), '\n\n'])
         else:
-            board = ''.join([board, '---\n\n'])
+            boardlst.append('---\n\n')
         for x in range(21):
             fall_through = 0
             if self.pile1.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile1) > x:
-                board = ''.join([board, str(self.pile1[x]), ' '])
+                boardlst.extend([str(self.pile1[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile2.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile2) > x:
-                board = ''.join([board, str(self.pile2[x]), ' '])
+                boardlst.extend([str(self.pile2[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile3.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile3) > x:
-                board = ''.join([board, str(self.pile3[x]), ' '])
+                boardlst.extend([str(self.pile3[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile4.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile4) > x:
-                board = ''.join([board, str(self.pile4[x]), ' '])
+                boardlst.extend([str(self.pile4[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile5.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile5) > x:
-                board = ''.join([board, str(self.pile5[x]), ' '])
+                boardlst.extend([str(self.pile5[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile6.flip > x:
-                board = ''.join([board, '***  '])
+                boardlst.append('***  ')
             elif len(self.pile6) > x:
-                board = ''.join([board, str(self.pile6[x]), ' '])
+                boardlst.extend([str(self.pile6[x]), ' '])
             else:
-                board = ''.join([board, '---  '])
+                boardlst.append('---  ')
                 fall_through += 1
             if self.pile7.flip > x:
-                board = ''.join([board, '***\n'])
+                boardlst.append('***\n')
             elif len(self.pile7) > x:
-                board = ''.join([board, str(self.pile7[x]), '\n'])
+                boardlst.extend([str(self.pile7[x]), '\n'])
             else:
-                board = ''.join([board, '---\n'])
+                boardlst.append('---\n')
                 fall_through += 1
             if fall_through == 7:
-                return board
+                return ''.join(boardlst)
 
     def deal3(self):
         if self.deck.flip == 0:        # All cards have been dealt

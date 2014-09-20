@@ -165,14 +165,14 @@ class Solitare(object):
             if source_card.value == dest_card.value - 1:    # check if pile can be moved
                 if dest_card.suit in cross_color[source_card.suit]:
                     if source_pile is self.deck:  # if moving from deck, only move face up card
-                        dest_pile.pile.append(source_pile.pop(source_pile.flip))
+                        dest_pile.pile.append(source_pile.pile.pop(source_pile.flip))
                     else:
                         dest_pile.pile.extend(source_pile[-card_amount:])
                         del source_pile.pile[-card_amount:]
                     return True
         elif source_card.value == 13:     # Source card is King and dest is empty
             if source_pile is self.deck:
-                dest_pile.pile.append(source_pile.pop(source_pile.flip))
+                dest_pile.pile.append(source_pile.pile.pop(source_pile.flip))
             else:
                 dest_pile.pile.extend(source_pile[-card_amount:])
                 del source_pile.pile[-card_amount:]
@@ -257,7 +257,7 @@ if __name__ == '__main__':
         elif selection == '3':
             if move_stack:
                 game = move_stack.pop()
-                input_dict = {'0': game.discard,
+                input_dict = {'0': game.deck,
                               '1': game.pile1,
                               '2': game.pile2,
                               '3': game.pile3,

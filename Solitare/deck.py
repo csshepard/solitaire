@@ -1,6 +1,5 @@
-from card import *
 import random
-
+import card
 
 class Deck(object):
     def __init__(self, source=None, amount=0):
@@ -13,23 +12,23 @@ class Deck(object):
             suits = ['Spade', 'Heart', 'Club', 'Diamond']
             for suit in suits:
                 for value in range(1, 14):
-                    self.deck.append(Card(value, suit))
+                    self.deck.append(card.Card(value, suit))
         else:
             if len(source) < amount <= 0:        # ensure amount is valid
                 amount = len(source)
-            for card in range(amount):
+            for num in range(amount):
                 self.deck.append(source.deal())  # Cards are removed from source
     
     def __repr__(self):
         deckstr = ''
-        for card in self.deck:
-            deckstr = deckstr + card + '\n'
+        for acard in self.deck:
+            deckstr = deckstr + acard + '\n'
         return repr(deckstr)
 
     def __str__(self):
         deckstr = ''
-        for card in self.deck:
-            deckstr = deckstr + card + '\n'
+        for acard in self.deck:
+            deckstr = deckstr + acard + '\n'
         return deckstr
 
     def __len__(self):

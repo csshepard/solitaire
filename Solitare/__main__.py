@@ -31,7 +31,7 @@ if __name__ == '__main__':
             move_stack.append(deepcopy(game))
             while True:
                 source = input('Source Card\n|0: Available Card|1-7: Piles|H1-H4: Home Piles|\n: ')
-                if (source in input_dict):
+                if source in input_dict:
                     break
             while True:
                 dest = input('Destination Pile\n|1-7: Piles|H: Home Piles|\n: ')

@@ -1,6 +1,7 @@
 import random
 import card
 
+
 class Deck(object):
     def __init__(self, source=None, amount=0):
         #Creates a list of cards

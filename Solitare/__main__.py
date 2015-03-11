@@ -1,28 +1,31 @@
-import Solitare
+from solitare import Solitare
 from copy import deepcopy
+
+
 if __name__ == '__main__':
-    game = Solitare.Solitare()  # Create new game
-    move_stack = [deepcopy(game)]    # Create stack for undo
-    input_dict = {'0': game.pile0,
-                  '1': game.pile1,
-                  '2': game.pile2,
-                  '3': game.pile3,
-                  '4': game.pile4,
-                  '5': game.pile5,
-                  '6': game.pile6,
-                  '7': game.pile7,
-                  'H1': game.home1,
-                  'H2': game.home2,
-                  'H3': game.home3,
-                  'H4': game.home4}
+    game = Solitare()  # Create new game
+    move_stack = []
+    input_dict = {'0': game.deck,
+                  '1': game.piles[0],
+                  '2': game.piles[1],
+                  '3': game.piles[2],
+                  '4': game.piles[3],
+                  '5': game.piles[4],
+                  '6': game.piles[5],
+                  '7': game.piles[6],
+                  'H1': game.homes[0],
+                  'H2': game.homes[1],
+                  'H3': game.homes[2],
+                  'H4': game.homes[3]}
     while True:  # Main Loop
         source = dest = ''
         print('\n', game, sep='')
         selection = input('|1: Deal|2: Move Card|3: Undo|\n: ').split()
         if len(selection) == 0 or selection[0] == '1':
-            game.deal()
             move_stack.append(deepcopy(game))
+            game.deal()
         elif selection[0] == '2':
+            move_stack.append(deepcopy(game))
             selection.pop(0)
             if selection:
                 source = selection.pop(0)
@@ -39,33 +42,28 @@ if __name__ == '__main__':
                 dest = input('Destination Pile\n'
                              '|1-7: Piles|H: Home Piles|\n: ')
             if dest < '8':
-                index = 1
-                if game.movepile(input_dict[source], input_dict[dest], index):
-                    if source != '0':
-                        input_dict[source].update()
-                    move_stack.append(deepcopy(game))
+                if not game.movepile(input_dict[source], input_dict[dest]):
+                    move_stack.pop()
             else:
-                if game.movehome(input_dict[source]):
-                    if source != '0':
-                        input_dict[source].update()
-                    move_stack.append(deepcopy(game))
+                if not game.movehome(input_dict[source]):
+                    move_stack.pop()
         elif selection[0] == '0':
             break
         elif selection[0] == '3':
-            if move_stack:
+            if len(move_stack) > 0:
                 game = move_stack.pop()
-                input_dict = {'0': game.pile0,
-                              '1': game.pile1,
-                              '2': game.pile2,
-                              '3': game.pile3,
-                              '4': game.pile4,
-                              '5': game.pile5,
-                              '6': game.pile6,
-                              '7': game.pile7,
-                              'H1': game.home1,
-                              'H2': game.home2,
-                              'H3': game.home3,
-                              'H4': game.home4}
+                input_dict = {'0': game.deck,
+                              '1': game.piles[0],
+                              '2': game.piles[1],
+                              '3': game.piles[2],
+                              '4': game.piles[3],
+                              '5': game.piles[4],
+                              '6': game.piles[5],
+                              '7': game.piles[6],
+                              'H1': game.homes[0],
+                              'H2': game.homes[1],
+                              'H3': game.homes[2],
+                              'H4': game.homes[3]}
         if game.checkwin():
             print('YOU WIN!!!!')
             break

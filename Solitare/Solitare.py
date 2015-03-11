@@ -1,4 +1,4 @@
-import deck
+from deck import Deck
 
 
 class CardPile(object):
@@ -38,113 +38,102 @@ class CardPile(object):
 
 class Solitare(object):
     def __init__(self):
-        adeck = deck.Deck()
+        adeck = Deck()
         adeck.shuffle()
-        self.pile1 = CardPile(adeck, 1)   # Tableau Piles
-        self.pile1.update()
-        self.pile2 = CardPile(adeck, 2)
-        self.pile2.update()
-        self.pile3 = CardPile(adeck, 3)
-        self.pile3.update()
-        self.pile4 = CardPile(adeck, 4)
-        self.pile4.update()
-        self.pile5 = CardPile(adeck, 5)
-        self.pile5.update()
-        self.pile6 = CardPile(adeck, 6)
-        self.pile6.update()
-        self.pile7 = CardPile(adeck, 7)
-        self.pile7.update()
-        self.home1 = CardPile()          # Foundation Piles
-        self.home2 = CardPile()
-        self.home3 = CardPile()
-        self.home4 = CardPile()
-        self.pile0 = CardPile(adeck)     # Combination of Deck and Waste Piles
+        self.piles = [CardPile(adeck, 1), CardPile(adeck, 2),
+                      CardPile(adeck, 3), CardPile(adeck, 4),
+                      CardPile(adeck, 5), CardPile(adeck, 6),
+                      CardPile(adeck, 7)]
+        for pile in self.piles:
+            pile.update()
+        self.homes = [CardPile(), CardPile(), CardPile(), CardPile()]
+        self.deck = CardPile(adeck)     # Combination of Deck and Waste Piles
 
     def __str__(self):
         boardlst = []
         # Draw Pile
-        if self.pile0.flip > 0:
+        if self.deck.flip > 0:
             boardlst.append('***  ')
         else:
             boardlst.append('---  ')
         # Waste Pile
-        if self.pile0.flip < len(self.pile0):
-            boardlst.extend([str(self.pile0.pile[self.pile0.flip]), ' '])
+        if self.deck.flip < len(self.deck):
+            boardlst.extend([str(self.deck.pile[self.deck.flip]), ' '])
         else:
             boardlst.append('---  ')
         boardlst.append('     ')
         # Foundation Piles
-        if len(self.home1.pile):
-            boardlst.extend([str(self.home1.pile[-1]), ' '])
+        if len(self.homes[0].pile):
+            boardlst.extend([str(self.homes[0].pile[-1]), ' '])
         else:
             boardlst.append('---  ')
-        if len(self.home2.pile):
-            boardlst.extend([str(self.home2.pile[-1]), ' '])
+        if len(self.homes[1].pile):
+            boardlst.extend([str(self.homes[1].pile[-1]), ' '])
         else:
             boardlst.append('---  ')
-        if len(self.home3.pile):
-            boardlst.extend([str(self.home3.pile[-1]), ' '])
+        if len(self.homes[2].pile):
+            boardlst.extend([str(self.homes[2].pile[-1]), ' '])
         else:
             boardlst.append('---  ')
-        if len(self.home4.pile):
-            boardlst.extend([str(self.home4.pile[-1]), '\n\n'])
+        if len(self.homes[3].pile):
+            boardlst.extend([str(self.homes[3].pile[-1]), '\n\n'])
         else:
             boardlst.append('---\n\n')
         for x in range(max([len(pile) for pile in
-                            [self.pile1, self.pile2, self.pile3,
-                             self.pile4, self.pile5, self.pile6,
-                             self.pile7]])):
-            if self.pile1.flip > x:
+                            [self.piles[0], self.piles[1], self.piles[2],
+                             self.piles[3], self.piles[4], self.piles[5],
+                             self.piles[6]]])):
+            if self.piles[0].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile1) > x:
-                boardlst.extend([str(self.pile1[x]), ' '])
+            elif len(self.piles[0]) > x:
+                boardlst.extend([str(self.piles[0][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile2.flip > x:
+            if self.piles[1].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile2) > x:
-                boardlst.extend([str(self.pile2[x]), ' '])
+            elif len(self.piles[1]) > x:
+                boardlst.extend([str(self.piles[1][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile3.flip > x:
+            if self.piles[2].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile3) > x:
-                boardlst.extend([str(self.pile3[x]), ' '])
+            elif len(self.piles[2]) > x:
+                boardlst.extend([str(self.piles[2][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile4.flip > x:
+            if self.piles[3].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile4) > x:
-                boardlst.extend([str(self.pile4[x]), ' '])
+            elif len(self.piles[3]) > x:
+                boardlst.extend([str(self.piles[3][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile5.flip > x:
+            if self.piles[4].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile5) > x:
-                boardlst.extend([str(self.pile5[x]), ' '])
+            elif len(self.piles[4]) > x:
+                boardlst.extend([str(self.piles[4][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile6.flip > x:
+            if self.piles[5].flip > x:
                 boardlst.append('***  ')
-            elif len(self.pile6) > x:
-                boardlst.extend([str(self.pile6[x]), ' '])
+            elif len(self.piles[5]) > x:
+                boardlst.extend([str(self.piles[5][x]), ' '])
             else:
                 boardlst.append('---  ')
-            if self.pile7.flip > x:
+            if self.piles[6].flip > x:
                 boardlst.append('***\n')
-            elif len(self.pile7) > x:
-                boardlst.extend([str(self.pile7[x]), '\n'])
+            elif len(self.piles[6]) > x:
+                boardlst.extend([str(self.piles[6][x]), '\n'])
             else:
                 boardlst.append('---\n')
         return ''.join(boardlst)
 
     def deal(self, amount=3):
-        if self.pile0.flip == 0:        # All cards have been dealt
-            self.pile0.flip = len(self.pile0)
+        if self.deck.flip == 0:        # All cards have been dealt
+            self.deck.flip = len(self.deck)
         else:
-            self.pile0.flip -= amount   # Deal, at most, amount cards
-            if self.pile0.flip < 0:
-                self.pile0.flip = 0
+            self.deck.flip -= amount   # Deal, at most, amount cards
+            if self.deck.flip < 0:
+                self.deck.flip = 0
 
     def movepile(self, source_pile, dest_pile):
         if source_pile.flip == len(source_pile):
@@ -155,7 +144,7 @@ class Solitare(object):
                        'Diamond': ['Spade', 'Club']}
         if len(dest_pile.pile) > 0:    # Check for empty pile
             dest_card = dest_pile[-1]  # Set top card
-            if source_pile is self.pile0:
+            if source_pile is self.deck:
                 if (source_pile[source_pile.flip].value ==
                         dest_card.value - 1 and dest_card.suit in
                         cross_color[source_pile[source_pile.flip].suit]):
@@ -169,14 +158,16 @@ class Solitare(object):
                         dest_pile.pile.extend(
                             source_pile[source_pile.pile.index(card):])
                         del source_pile.pile[source_pile.pile.index(card):]
+                        source_pile.update()
                         return True
         # Source card is King and dest is empty
         elif source_pile[source_pile.flip].value == 13:
-            if source_pile is self.pile0:
+            if source_pile is self.deck:
                 dest_pile.pile.append(source_pile.pop(source_pile.flip))
             else:
                 dest_pile.pile.extend(source_pile[source_pile.flip:])
                 del source_pile.pile[source_pile.flip:]
+                source_pile.update()
             return True
         return False
 
@@ -186,26 +177,28 @@ class Solitare(object):
             return False
         source_index = -1
         # Card is face up card on waste pile
-        if source_pile is self.pile0:
+        if source_pile is self.deck:
             source_index = source_pile.flip
         source_card = source_pile[source_index]
-        homes = {'Spade': self.home1,
-                 'Heart': self.home2,
-                 'Club': self.home3,
-                 'Diamond': self.home4}
+        homes = {'Spade': self.homes[0],
+                 'Heart': self.homes[1],
+                 'Club': self.homes[2],
+                 'Diamond': self.homes[3]}
         dest_pile = homes[source_card.suit]
         # Foundation has cards
         if len(dest_pile) > 0:
             if source_card.value == dest_pile[-1].value + 1:
                 dest_pile.pile.append(source_pile.pop(source_index))
+                source_pile.update()
                 return True
         # Foundation is empty and card is Ace
         elif source_pile[source_index].value == 1:
             dest_pile.pile.append(source_pile.pop(source_index))
+            source_pile.update()
             return True
         return False
 
     def checkwin(self):
-        if (len(self.home1) == 13 and len(self.home2) == 13 and
-                len(self.home3) == 13 and len(self.home4) == 13):
+        if (len(self.homes[0]) == 13 and len(self.homes[1]) == 13 and
+                len(self.homes[2]) == 13 and len(self.homes[3]) == 13):
             return True

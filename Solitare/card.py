@@ -10,7 +10,7 @@ class Card(object):
         if suit in suits:
             self.suit = suit
         else:
-            raise ValueError('{} no a valid card suit'.format(suit))
+            raise ValueError('{} not a valid card suit'.format(suit))
 
     def __repr__(self):
         return repr('Value = {0}, Suit = {1}'.format(self.value, self.suit))

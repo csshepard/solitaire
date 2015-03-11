@@ -1,5 +1,5 @@
 import random
-import card
+from card import Card
 
 
 class Deck(object):
@@ -13,7 +13,7 @@ class Deck(object):
             suits = ['Spade', 'Heart', 'Club', 'Diamond']
             for suit in suits:
                 for value in range(1, 14):
-                    self.deck.append(card.Card(value, suit))
+                    self.deck.append(Card(value, suit))
         else:
             if len(source) < amount <= 0:        # ensure amount is valid
                 raise ValueError('Invalid card amount')

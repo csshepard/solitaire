@@ -1,17 +1,16 @@
-
 class Card(object):
     def __init__(self, value=1, suit='Spade'):
-        #Creates a card object that has a numeric value and a string suit
-        #If no args or invalid args are passed, the Ace of Spades is created
+        # Creates a card object that has a numeric value and a string suit
+        # If no args are passed, the Ace of Spades is created
         if 0 < value < 14:
             self.value = value
         else:
-            self.value = 1
+            raise ValueError('{} not a valid card value'.format(value))
         suits = ['Spade', 'Heart', 'Club', 'Diamond']
         if suit in suits:
             self.suit = suit
         else:
-            self.suit = 'Spade'
+            raise ValueError('{} no a valid card suit'.format(suit))
 
     def __repr__(self):
         return repr('Value = {0}, Suit = {1}'.format(self.value, self.suit))

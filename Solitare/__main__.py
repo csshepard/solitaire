@@ -1,5 +1,6 @@
 from solitare import Solitare
 from copy import deepcopy
+from time import sleep
 
 
 if __name__ == '__main__':
@@ -42,10 +43,10 @@ if __name__ == '__main__':
                 dest = input('Destination Pile\n'
                              '|1-7: Piles|H: Home Piles|\n: ')
             if dest < '8':
-                if not game.movepile(input_dict[source], input_dict[dest]):
+                if not game.move_pile(input_dict[source], input_dict[dest]):
                     move_stack.pop()
             else:
-                if not game.movehome(input_dict[source]):
+                if not game.move_home(input_dict[source]):
                     move_stack.pop()
         elif selection[0] == '0':
             break
@@ -64,6 +65,10 @@ if __name__ == '__main__':
                               'H2': game.homes[1],
                               'H3': game.homes[2],
                               'H4': game.homes[3]}
-        if game.checkwin():
+        if game.check_win():
+            while max([len(pile) for pile in game.piles]) > 0:
+                map(game.move_home, game.piles)
+                print('\n', game, sep='')
+                sleep(1)
             print('YOU WIN!!!!')
             break

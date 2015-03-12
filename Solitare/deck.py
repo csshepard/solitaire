@@ -66,3 +66,9 @@ def test_deck_deal():
     nose.assert_equal(Card(13, 'Diamond'), deck.deal())
     nose.assert_not_equal(Card(13, 'Diamond'), deck.deal())
     nose.assert_equal(Card(11, 'Diamond'), deck.deal())
+
+def test_empty_deck():
+    deck = Deck()
+    while len(deck) > 0:
+        deck.deal()
+    nose.assert_raises(IndexError, deck.deal)

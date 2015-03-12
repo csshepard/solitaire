@@ -135,7 +135,7 @@ class Solitare(object):
             if self.deck.flip < 0:
                 self.deck.flip = 0
 
-    def movepile(self, source_pile, dest_pile):
+    def move_pile(self, source_pile, dest_pile):
         if source_pile.flip == len(source_pile):
             return False
         cross_color = {'Spade': ['Heart', 'Diamond'],
@@ -171,7 +171,7 @@ class Solitare(object):
             return True
         return False
 
-    def movehome(self, source_pile):
+    def move_home(self, source_pile):
         # Card is top on pile
         if len(source_pile) == 0 or source_pile.flip == len(source_pile):
             return False
@@ -198,7 +198,8 @@ class Solitare(object):
             return True
         return False
 
-    def checkwin(self):
-        if (len(self.homes[0]) == 13 and len(self.homes[1]) == 13 and
-                len(self.homes[2]) == 13 and len(self.homes[3]) == 13):
+    def check_win(self):
+        if len(self.deck) == 0 and False not in [self.piles[x].flip for x in range(7)] == [0]*7:
+            return True
+        if [len(self.homes[x]) for x in range(4)] == [13]*4:
             return True

@@ -14,16 +14,16 @@ class Deck(object):
                 self.deck.append(Card(value, suit))
 
     def __repr__(self):
-        deckstr = ''
-        for acard in self.deck:
-            deckstr = deckstr + repr(acard) + '\n'
-        return repr(deckstr)
+        deck_str = ''
+        for card in self.deck:
+            deck_str += repr(card) + '\n'
+        return repr(deck_str)
 
     def __str__(self):
-        deckstr = ''
-        for acard in self.deck:
-            deckstr = deckstr + str(acard) + '\n'
-        return deckstr
+        deck_str = ''
+        for card in self.deck:
+            deck_str += str(card) + '\n'
+        return deck_str
 
     def __len__(self):
         return len(self.deck)
@@ -50,6 +50,7 @@ def test_full_deck_creation():
                       for value in range(1, 14)]
     nose.assert_equal(deck.deck, full_deck.deck)
 
+
 def test_deck_shuffle():
     deck = Deck()
     deck_str = str(deck)
@@ -61,11 +62,13 @@ def test_deck_shuffle():
         nose.assert_not_equal(deck_str, shuffled)
         deck_str = shuffled
 
+
 def test_deck_deal():
     deck = Deck()
     nose.assert_equal(Card(13, 'Diamond'), deck.deal())
     nose.assert_not_equal(Card(13, 'Diamond'), deck.deal())
     nose.assert_equal(Card(11, 'Diamond'), deck.deal())
+
 
 def test_empty_deck():
     deck = Deck()

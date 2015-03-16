@@ -1,2 +1,2 @@
-solitare
+solitaire
 ========

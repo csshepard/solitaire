@@ -51,7 +51,7 @@ def create_complete_game():
 
 def set_input_dict(game):
     """Sets the input dictionary to point to the attributes of game.
-    Used initially, and also whenever an undo is performed
+    Needed because Undo changes the game object
     """
     input_dict = {'0': game.deck,
                   '1': game.piles[0],
@@ -126,7 +126,7 @@ def run_game():
         print('\n', game, sep='')
         move_stack.append(deepcopy(game))
         selection = input('|1: Deal|2: Move Card'
-                          '|3: Move Cards Home|4: Undo|\n: ').split()
+                          '|3: Move Cards Home|4: Undo|5:New Game\n: ').split()
         if len(selection) == 0 or selection[0] == '1':
             game.deal()
         elif selection[0] == '2':
@@ -144,6 +144,9 @@ def run_game():
             break
         elif selection[0] == 'DEBUG':
             game = create_complete_game()
+        elif selection[0] == '5':
+            game = Solitaire()
+            move_stack = []
         if game.check_win():
             print('YOU WIN!!!!')
             break

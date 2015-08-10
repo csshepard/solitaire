@@ -4,7 +4,7 @@ Classes:
     CardPile: a list of cards with a divider
     Solitaire: The solitaire game
 """
-from playing_cards import Deck
+from .playing_cards import Deck
 
 
 class CardPile(object):

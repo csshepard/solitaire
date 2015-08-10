@@ -60,7 +60,6 @@ class Card(object):
                   12: 'Q',
                   13: 'K'}
         return suit + '{0} {1}\033[0m'.format(values[self.value], self.suit[0])
-        
 
     def __eq__(self, other):
         return self.suit == other.suit and self.value == other.value

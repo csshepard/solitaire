@@ -1,6 +1,21 @@
-"""Driver script for text based solitaire game"""
+"""Driver script for text based solitaire game
+- The following inputs are valid:
+  - 1 or <blank>: Draws a card from the deck
+  - 2: Moves card(s) from one pile to another
+  - 3: Automatically moves all valid cards to the foundation piles
+  - 4: Undo the last move
+  - 5: Start a new game
+  - 0: Quit current game
+- When moving a card the following inputs are used to specify a pile
+  - 0: Draw Pile
+  - 1-7: The Tableau Piles from left to right
+  - H: The Foundation Piles (used when moving to foundation piles)
+  - H1-H4: The Foundation Piles from left to right (used when moving from the foundation piles)
+
+The four foundation piles always hold the same suit.  From left to right they are Spade, Heart, Club, Diamond.
+"""
 from __future__ import print_function
-from solitaire import Solitaire
+from Solitaire.solitaire import Solitaire
 from copy import deepcopy
 from time import sleep
 
@@ -10,8 +25,8 @@ def create_complete_game():
     filed with the cards King through 2 of all 4 suits, and the draw pile
     has the 4 Aces
     """
-    from playing_cards import Card
-    from solitaire import CardPile
+    from Solitaire.playing_cards import Card
+    from Solitaire.solitaire import CardPile
     test_game = Solitaire()
     test_game.deck.pile = [Card(1, 'Spade'), Card(1, 'Heart'),
                            Card(1, 'Club'), Card(1, 'Diamond')]

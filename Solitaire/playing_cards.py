@@ -5,10 +5,17 @@ Examples:
     Card(11, 'Heart') : Creates the Jack of Hearts
     Deck() : Creates a deck of cards containing all 52 standard cards
 """
-
+from __future__ import print_function
 import random
 import nose.tools as nose
+import sys
 
+try:
+    from colorama import init
+    init()
+except ImportError:
+    if sys.platform.startswith('win'):
+        sys.exit("colorama required for windows use")
 
 class Card(object):
     """A Card is a representation of a playing card from a standard deck

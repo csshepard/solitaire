@@ -5,7 +5,7 @@ A simple text based Solitaire game played with keyboard input
 Start game with "python main.py"
 
 - The following inputs are valid:
-  - 1 or <blank>: Draws a card from the deck
+  - 1 or *blank*: Draws a card from the deck
   - 2: Moves card(s) from one pile to another
   - 3: Automatically moves all valid cards to the foundation piles
   - 4: Undo the last move

@@ -1,4 +1,5 @@
 """Driver script for text based solitaire game"""
+from __future__ import print_function
 from solitaire import Solitaire
 from copy import deepcopy
 from time import sleep
@@ -153,4 +154,8 @@ def run_game():
 
 
 if __name__ == '__main__':
+    try:
+        input = raw_input
+    except NameError:
+        pass
     run_game()

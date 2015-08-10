@@ -42,6 +42,10 @@ class Card(object):
         return repr('Value = {0}, Suit = {1}'.format(self.value, self.suit))
 
     def __str__(self):
+        if self.suit == 'Heart' or self.suit == 'Diamond':
+            suit = '\033[47;31m'
+        else:
+            suit = '\033[47;30m'
         values = {1: 'A',
                   2: '2',
                   3: '3',
@@ -55,7 +59,8 @@ class Card(object):
                   11: 'J',
                   12: 'Q',
                   13: 'K'}
-        return '{0} {1}'.format(values[self.value], self.suit[0])
+        return suit + '{0} {1}\033[0m'.format(values[self.value], self.suit[0])
+        
 
     def __eq__(self, other):
         return self.suit == other.suit and self.value == other.value

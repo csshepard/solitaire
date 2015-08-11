@@ -137,7 +137,7 @@ class Solitaire(object):
         # Waste Pile
         if self.deck.flip < len(self.deck):
             board_lst.extend(
-                [str(self.deck.get_face_up().next()[0]), '  '])
+                [str(next(self.deck.get_face_up())[0]), '  '])
         else:
             board_lst.append('---  ')
         board_lst.append('     ')
@@ -196,7 +196,7 @@ class Solitaire(object):
         if len(destination_pile.pile) > 0:    # Check for empty pile
             destination_card = destination_pile[-1]  # Set top card
             if source_pile is self.deck:
-                source_card = source_pile.get_face_up().next()
+                source_card = next(source_pile.get_face_up())
                 if (source_card[0].value == destination_card.value - 1 and
                         destination_card.suit in
                         cross_color[source_card[0].suit]):
@@ -212,7 +212,7 @@ class Solitaire(object):
                         return True
         # Source card is King and destination is empty
         else:
-            source_card = source_pile.get_face_up().next()
+            source_card = next(source_pile.get_face_up())
             if source_card[0].value == 13:
                 if source_pile is self.deck:
                     destination_pile.move_card(source_pile, source_pile.flip)

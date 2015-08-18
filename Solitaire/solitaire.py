@@ -175,7 +175,7 @@ class Solitaire(object):
             if self.deck.flip < 0:
                 self.deck.flip = 0
 
-    def move_pile(self, source_pile, destination_pile):
+    def move_pile(self, source_pile, destination_pile, move=True):
         """Move cards from waste pile or tableau pile to another tableau pile.
         If source pile is waste pile, only top card will be moved.  If source
         pile is a tableau pile, face up cards will be searched for a possible
@@ -186,6 +186,8 @@ class Solitaire(object):
                 from
             destination_pile (CardPile): the CardPile where the cards will be
                 moved to
+            move (Bool) : If True, then move is completed, otherwise only
+                move validity is returned
         """
         if source_pile.flip == len(source_pile):
             return False
@@ -200,29 +202,32 @@ class Solitaire(object):
                 if (source_card[0].value == destination_card.value - 1 and
                         destination_card.suit in
                         cross_color[source_card[0].suit]):
-                    destination_pile.move_card(source_pile, source_card[1])
+                    if move:
+                        destination_pile.move_card(source_pile, source_card[1])
                     return True
             else:
                 for card in source_pile.get_face_up():
                     if (card[0].value == destination_card.value - 1 and
                             destination_card.suit in
                             cross_color[card[0].suit]):
-                        destination_pile.move_cards(source_pile, card[1])
-                        self._update()
+                        if move:
+                            destination_pile.move_cards(source_pile, card[1])
+                            self._update()
                         return True
         # Source card is King and destination is empty
         else:
             source_card = next(source_pile.get_face_up())
             if source_card[0].value == 13:
-                if source_pile is self.deck:
-                    destination_pile.move_card(source_pile, source_pile.flip)
-                else:
-                    destination_pile.move_cards(source_pile, source_card[1])
-                self._update()
-            return True
-        return False
+                if move:
+                    if source_pile is self.deck:
+                        destination_pile.move_card(source_pile, source_pile.flip)
+                    else:
+                        destination_pile.move_cards(source_pile, source_card[1])
+                    self._update()
+                return True
+            return False
 
-    def move_home(self, source_pile):
+    def move_home(self, source_pile, move=True):
         """Move card from source_pile to a foundation pile. Foundation pile
         is determined by suit of top card on source pile.  The order is
         Spade, Heart, Club, Diamond.  Returns True if move was successful,
@@ -231,6 +236,8 @@ class Solitaire(object):
         Args:
             source_pile (CardPile): the CardPile where the card will be
                 moved from
+            move (Bool) : If True, then move is completed, otherwise only
+                move validity is returned
         """
         # Card is top on pile
         if source_pile.flip == len(source_pile):
@@ -248,8 +255,9 @@ class Solitaire(object):
         if ((len(destination_pile) == 0 and source_card.value == 1) or
                 (len(destination_pile) > 0 and
                  source_card.value == destination_pile[-1].value + 1)):
-            destination_pile.move_card(source_pile, source_index)
-            self._update()
+            if move:
+                destination_pile.move_card(source_pile, source_index)
+                self._update()
             return True
         return False
 

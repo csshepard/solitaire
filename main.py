@@ -77,10 +77,10 @@ def set_input_dict(game):
                   '5': game.piles[4],
                   '6': game.piles[5],
                   '7': game.piles[6],
-                  'H1': game.homes[0],
-                  'H2': game.homes[1],
-                  'H3': game.homes[2],
-                  'H4': game.homes[3]}
+                  'h1': game.homes[0],
+                  'h2': game.homes[1],
+                  'h3': game.homes[2],
+                  'h4': game.homes[3]}
     return input_dict
 
 
@@ -106,7 +106,7 @@ def move(game, selection=None):
     if selection:
         destination = selection.pop(0)
     while True:
-        if (destination != '0' and (destination in input_dict or
+        if (destination != '0' and (destination.lower() in input_dict or
                                     destination.lower() == 'h')):
             break
         destination = input('Destination Pile\n|1-7: Piles|H: Home Piles|\n: ')
@@ -119,50 +119,76 @@ def move(game, selection=None):
     return False
 
 
-def auto_move_home(game):
-    """Moves cards to foundation piles until no more are possible
-    Returns True if a move was performed
+def auto_move(game):
+    """Makes one valid move
+    Return True if a move was performed
 
     Args:
         game (Solitaire): The game where the cards will be moved
     """
-    moved = False
-    while any([game.move_home(pile) for pile in game.piles + [game.deck]]):
-        moved = True
-        print('\n', game, sep='')
-        sleep(0.3)
-    return moved
+    while True:
+        moves = []
+        for sPile in [game.deck] + game.piles:
+            for dPile in game.piles:
+                if game.move_pile(sPile, dPile, move=False):
+                    moves.append((sPile, dPile))
+            if game.move_home(sPile, move=False):
+                    moves.append((sPile, 'h'))
+        for move in moves:
+            if move[1] == 'h':
+                yield game.move_home(move[0])
+            else:
+                yield game.move_pile(move[0], move[1], move=True)
+        yield False
 
 
 def run_game():
     """The games main loop."""
     game = Solitaire()  # Create new game
     move_stack = []
+    ap = auto_move(game)
+    print('\n', game, sep='')
     while True:  # Main Loop
-        print('\n', game, sep='')
         move_stack.append(deepcopy(game))
         selection = input('|1: Deal|2: Move Card'
                           '|3: Move Cards Home|4: Undo|5:New Game\n: ').split()
         if len(selection) == 0 or selection[0] == '1':
             game.deal()
+            print('\n', game, sep='')
         elif selection[0] == '2':
             selection.pop(0)
-            if not move(game, selection):
+            if move(game, selection):
+                print('\n', game, sep='')
+            else:
                 move_stack.pop()
+
         elif selection[0] == '3':
-            if not auto_move_home(game):
-                move_stack.pop()
+            while any(game.move_home(pile) for pile in game.piles + [game.deck]):
+                sleep(0.2)
+                print('\n', game, sep='')
+                move_stack.append(deepcopy(game))
+            move_stack.pop()
         elif selection[0] == '4':
             move_stack.pop()
             if len(move_stack) > 0:
                 game = move_stack.pop()
+                ap = auto_move(game)
+                print('\n', game, sep='')
         elif selection[0] == '0':
             break
         elif selection[0] == 'DEBUG':
             game = create_complete_game()
+            print('\n', game, sep='')
         elif selection[0] == '5':
             game = Solitaire()
             move_stack = []
+            ap = auto_move(game)
+            print('\n', game, sep='')
+        elif selection[0] == 'a':
+            if not next(ap):
+                ap = auto_move(game)
+                game.deal()
+            print('\n', game, sep='')
         if game.check_win():
             print('YOU WIN!!!!')
             break

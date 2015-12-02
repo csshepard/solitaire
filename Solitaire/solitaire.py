@@ -58,6 +58,9 @@ class CardPile(object):
         return repr('A pile of {0} cards, {1} are face up'.format(
             len(self.pile), len(self.pile)-self.flip))
 
+    def index(self, item):
+        return self.pile.index(item)
+
     def update(self):
         """Flips over top card if face down"""
         if self.pile and self.flip > len(self.pile) - 1:
@@ -174,6 +177,7 @@ class Solitaire(object):
             self.deck.flip -= amount   # Deal, at most, amount cards
             if self.deck.flip < 0:
                 self.deck.flip = 0
+        return True
 
     def move_pile(self, source_pile, destination_pile, move=True):
         """Move cards from waste pile or tableau pile to another tableau pile.
@@ -197,13 +201,20 @@ class Solitaire(object):
                        'Diamond': ['Spade', 'Club']}
         if len(destination_pile.pile) > 0:    # Check for empty pile
             destination_card = destination_pile[-1]  # Set top card
-            if source_pile is self.deck:
-                source_card = next(source_pile.get_face_up())
-                if (source_card[0].value == destination_card.value - 1 and
+            if source_pile is self.deck or destination_pile in self.homes:
+                source_card = source_pile[-1]
+                if source_pile is self.deck:
+                    source_card = source_pile[source_pile.flip]
+                if ((destination_pile in self.homes and
+                        source_card.suit == destination_card.suit and
+                        source_card.value == destination_card.value + 1) or
+                    (destination_pile not in self.homes and
+                        source_card.value == destination_card.value - 1 and
                         destination_card.suit in
-                        cross_color[source_card[0].suit]):
+                        cross_color[source_card.suit])):
                     if move:
-                        destination_pile.move_card(source_pile, source_card[1])
+                        destination_pile.move_card(source_pile, source_pile.index(source_card))
+                        self._update()
                     return True
             else:
                 for card in source_pile.get_face_up():
@@ -214,13 +225,19 @@ class Solitaire(object):
                             destination_pile.move_cards(source_pile, card[1])
                             self._update()
                         return True
-        # Source card is King and destination is empty
+        # Source card is King or Ace and destination is empty
         else:
-            source_card = next(source_pile.get_face_up())
-            if source_card[0].value == 13:
+            if destination_pile in self.homes:
+                source_card = (source_pile[-1], -1)
+                if source_pile is self.deck:
+                    source_card = next(source_pile.get_face_up())
+            else:
+                source_card = next(source_pile.get_face_up())
+            if ((destination_pile in self.piles and source_card[0].value == 13) or
+                    (destination_pile in self.homes and source_card[0].value == 1)):
                 if move:
-                    if source_pile is self.deck:
-                        destination_pile.move_card(source_pile, source_pile.flip)
+                    if source_pile is self.deck or destination_pile in self.homes:
+                        destination_pile.move_card(source_pile, source_card[1])
                     else:
                         destination_pile.move_cards(source_pile, source_card[1])
                     self._update()
@@ -247,11 +264,16 @@ class Solitaire(object):
         if source_pile is self.deck:
             source_index = source_pile.flip
         source_card = source_pile[source_index]
-        homes = {'Spade': self.homes[0],
-                 'Heart': self.homes[1],
-                 'Club': self.homes[2],
-                 'Diamond': self.homes[3]}
-        destination_pile = homes[source_card.suit]
+        destination_pile = None
+        for pile in self.homes:
+            if len(pile) > 0 and pile[0].suit == source_card.suit:
+                destination_pile = pile
+                break
+        if destination_pile is None:
+            for pile in self.homes:
+                if len(pile) == 0:
+                    destination_pile = pile
+                    break
         if ((len(destination_pile) == 0 and source_card.value == 1) or
                 (len(destination_pile) > 0 and
                  source_card.value == destination_pile[-1].value + 1)):
